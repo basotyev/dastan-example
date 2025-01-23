@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api-db:
+    container_name: api-db
+    image: postgres:15-alpine
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres-user
+      POSTGRES_PASSWORD: postgres-pass
+      POSTGRES_DB: test-db
+    networks:
+      - internal
+
+  api:
+    container_name: api
+    build:
+      context: .
+    expose:
+      - 8080
+    networks:
+      - internal
+
+
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  postgres:
